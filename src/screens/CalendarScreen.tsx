@@ -5,12 +5,14 @@ import EventScreen from './EventScreen';
 import {useEventStore} from '../store/eventStore';
 import {formatISODate} from '../helper/Date';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useUserStore} from '../store/userStote';
 const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const {getDayEvents} = useEventStore();
+  const {user} = useUserStore();
   useEffect(() => {
     getDayEvents(formatISODate(selectedDate));
-  }, [selectedDate]);
+  }, [selectedDate, user]);
 
   const previousDay = () => {
     const newDate = new Date(selectedDate);
