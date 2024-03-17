@@ -3,11 +3,15 @@ import {View, Button, StyleSheet} from 'react-native';
 
 import {useUserStore} from '../store/userStote';
 import Input from './Input';
+import Error from './Error';
+import Loading from './Loading';
 
 const LoginForm = () => {
-  const {loginUser} = useUserStore();
+  const {loginUser, loading, error} = useUserStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  console.log(error);
 
   const handleLogin = () => {
     loginUser({
@@ -15,15 +19,18 @@ const LoginForm = () => {
       password,
     });
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>
+      {error && <Error message={error.message} />}
       <Input
         value={email}
         onChangeText={setEmail}
         placeholder="Enter your login"
       />
-
       <Input
         value={password}
         onChangeText={setPassword}
@@ -31,7 +38,6 @@ const LoginForm = () => {
         secureTextEntry={true}
         onSubmitEditing={handleLogin}
       />
-
       <Button title="Login" onPress={handleLogin} />
     </View>
   );

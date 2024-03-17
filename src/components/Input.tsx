@@ -20,7 +20,7 @@ const Input = ({
   ...props
 }: InputProps) => {
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={50} behavior="padding">
+    <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="padding">
       <TextInput
         {...props}
         onSubmitEditing={onSubmitEditing}

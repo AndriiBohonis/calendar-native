@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {View, Button, StyleSheet} from 'react-native';
 import {useUserStore} from '../store/userStote';
 import Input from './Input';
+import Error from './Error';
+import Loading from './Loading';
 
 const RegisterForm = () => {
-  const {registerUser} = useUserStore();
+  const {registerUser, error, loading} = useUserStore();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,9 +20,12 @@ const RegisterForm = () => {
       });
     }
   };
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <View style={styles.container}>
+      {error && <Error message={error.message} />}
       <Input
         value={name}
         onChangeText={setName}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import {useEventStore} from '../store/eventStore';
 import {formatISODate} from '../helper/Date';
 import Input from './Input';
@@ -18,7 +18,10 @@ const EventForm = ({selectedDate}: {selectedDate: Date}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 150 : 0}>
       <Input
         onSubmitEditing={handleAddEvent}
         returnKeyType="done"
@@ -26,7 +29,7 @@ const EventForm = ({selectedDate}: {selectedDate: Date}) => {
         onChangeText={setText}
         placeholder="Enter your event"
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

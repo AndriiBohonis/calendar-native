@@ -4,6 +4,7 @@ import RegisterForm from '../components/RegisrefForm';
 
 import LoginForm from '../components/LoginForm';
 import {Button, View} from 'react-native';
+
 const Stack = createNativeStackNavigator();
 const AuthScreen = () => {
   return (

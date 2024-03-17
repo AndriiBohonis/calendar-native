@@ -17,6 +17,7 @@ export const useUserStore = create<IUserType>()(set => ({
 
       set({
         user: data.user,
+        error: null,
         isUser: true,
         loading: false,
       });
@@ -36,6 +37,7 @@ export const useUserStore = create<IUserType>()(set => ({
       set({
         user: data.user,
         isUser: true,
+        error: null,
         loading: false,
       });
     } catch (error) {
@@ -48,12 +50,24 @@ export const useUserStore = create<IUserType>()(set => ({
     set({loading: true});
     try {
       const user = await getUser();
-      set({
-        user,
-        isUser: true,
-        loading: false,
-      });
+
+      if (!user.email) {
+        SecureToken.removeToken();
+        set({
+          isUser: false,
+
+          loading: false,
+        });
+      } else {
+        set({
+          user,
+          error: null,
+          isUser: true,
+          loading: false,
+        });
+      }
     } catch (error) {
+      SecureToken.removeToken();
       set({loading: false});
       if (error instanceof AxiosError) {
         set({loading: false, error: error});
@@ -62,6 +76,7 @@ export const useUserStore = create<IUserType>()(set => ({
   },
   logoutUser: async () => {
     set({loading: true, user: null});
+    SecureToken.removeToken();
     try {
       await logoutUser();
 
@@ -69,7 +84,6 @@ export const useUserStore = create<IUserType>()(set => ({
         isUser: false,
         loading: false,
       });
-      SecureToken.removeToken();
     } catch (error) {
       if (error instanceof AxiosError) {
         set({loading: false, error: error});

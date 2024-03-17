@@ -3,9 +3,14 @@ import {FlatList} from 'react-native';
 
 import {useEventStore} from '../store/eventStore';
 import EventItem from './EventItem';
+import Loading from './Loading';
 
 const EventList = () => {
-  const {events} = useEventStore();
+  const {events, loading} = useEventStore();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <FlatList
